@@ -8,7 +8,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use DB;
-class User extends Model
+use Auth;
+class User extends Authenticatable
 {
     use Notifiable;
 
@@ -30,17 +31,17 @@ class User extends Model
         'password', 'remember_token',
     ];
 
-    public function userHasPermission($id)
+   
+    public function roles()
     {
-        $user_has_permission= DB::table('users')
-                            ->where('users.id','=',$id)
-                            ->join('user_has_roles','user_has_roles.user_id','=','users.id')
-                            ->join('roles','roles.id','=','user_has_roles.role_id')
-                            ->join('role_permissions','role_permissions.role_id','=','roles.id')
-                            ->join('permissions','permissions.id','=','role_permissions.permission_id')
-                            ->select('permissions.permission')
-                            ->distinct()
-                            ->get();
-        return $user_has_permission;
+        return $this->belongsToMany('App\Models\Role','user_has_roles','user_id','role_id');
+    }
+
+    public function hasRole($role)
+    {
+        if(is_string($role)){
+            return $this->roles->contains('type',$role);
+        }
+        return !! $role->intersect($this->roles)->count();
     }
 }

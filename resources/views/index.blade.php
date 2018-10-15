@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <!-- Latest compiled and minified CSS & JS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-<body>
-    <div class="container">
+@extends('layouts.app')
+
+@section('content')
+     <div class="container">
         <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header"></h1>
@@ -21,9 +13,12 @@
             @endif
             <div class="row">
                 <div class="col-md-6">
-                    <a href="{{asset('')}}manager/users/create">
+                @can('create',Auth::user())
+                
+                <a href="{{asset('')}}users/create">
                         <button class="btn btn-primary" id='buttonadd' ><i class=" fa fa-plus"></i>Thêm mới</button>
                     </a>
+                @endcan
                 </div>
             </div>
 
@@ -48,19 +43,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($users as $user)
+                            @foreach($users as $key=> $user)
                                 <tr class="gradeU">
                                     <td>{{$user->id}}</td>
                                     <td>{{$user->name}}</td>
                                     <td>{{$user->email}}</td>
                                     <td>
-                                        <a  href="">
+                                        @can('edit',Auth::user())
+                                        <a  href="{{asset('users/edit')}}/{{$user->id}}">
                                         <button  class="btn btn-success"><i class="fa fa-edit"></i></button>
                                         </a>
+                                        @endcan
+                                        @can('view',Auth::user())
                                         <a href="" >
                                         <button class="btn btn-warning showuser"><i class="fa fa-eye "></i></button>
                                         </a>
-                                        <button  class="btn btn-danger delete-user" user_id={{$user->id}}><i class="fas fa-trash-alt"></i></button>
+                                        @endcan
+                                        @can('delete', Auth::user())
+                                            <button user_id="{{$user->id}}"  class="btn btn-danger delete-user"><i class="fas fa-trash-alt"></i></button>
+                                        
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
@@ -72,6 +74,6 @@
 
         </div>
     </div>
-    </div>
-</body>
-</html>
+</div>
+@endsection
+
