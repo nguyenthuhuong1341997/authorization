@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use Gate;
 use DB;
 use Auth;
+use App\Http\Requests\UserRequest;
+use Hash;
 
 class UserController extends Controller
 {
@@ -18,45 +21,60 @@ class UserController extends Controller
 	}
     public function index()
     {
-        // $this->authorize('view', User::class);
+        $users= User::withTrashed()->restore();
         $users = DB::table('users')
-        ->select('users.*')
+                ->select('users.*')
                 ->where('users.id','!=',Auth::id())
+                ->whereNull('deleted_at')
                 ->get();
-        
+        // dd($users);
+        // $users = User::find(Auth::id())->roles()->get();
+        // $users = User::all();
+
+        // $users->load('roles');
+        // dd($users[0]);
         return view('index',compact('users'));
     }
 
     public function create()
     {
-        // $this->authorize('create', User::class);
+        $roles = Role::all();
         $user = new User();
-        return view('users.create',compact('user'));
+        return view('users.create',compact('user','roles'));
     }
-    public function store(RoleRequest $request)
+    public function store(UserRequest $request)
     {
-        toastr()->info(trans('master.add_successfully'));
-        $data= $request->all();
-        User::create($data);
-        return redirect('users');
+        $data = $request->all();
+        $user1 = new User();
+        $user1->name = $data['name'];
+        $user1->email = $data['email'];
+        $user1->password = Hash::make($data['password']);
+        $user1->save();
+        /* $user1 = User::create($data);*/
+        foreach ($data['role'] as $role) {
+            $user = User::find($user1->id);
+            $user->roles()->attach($role);
+        }
+        return redirect('users')->with('flag','Thêm Mới Thành Công !');
     }
     public function edit($id)
     {
         $user= User::find($id);
-        return view('users.create',compact('user'));
+        $roles = Role::all();
+        return view('users.edit',compact('user','roles'));
     }
-    public function update(RoleRequest $request, $id)
+    public function update(UserRequest $request, $id)
     {
-        toastr()->warning(trans('master.edit_successfully'));
         $data= $request->all();
         $user= User::find($id);
         $user->update($data);
-        return redirect('users');
+        return redirect('users')->with('flag','Cập nhật Thành Công !');
     }
     public function destroy($id)
     {
+        $user= User::find($id);
+        $user->delete();
+        return response()->json(['success']);
         
-        User::find($id)->delete();
-        return response()->json('success');
     }
 }
