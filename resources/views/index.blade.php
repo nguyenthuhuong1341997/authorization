@@ -73,11 +73,17 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <img src="http://www.gravatar.com/avatar/28fd20ccec6865e2d5f0e1f4446eb7bf?s=100">
                                                     </div>
-                                                    <div>
-                                                        
+                                                    <div class="col-md-8">
+                                                        <b>Name: </b><p>{{$user->name}}</p>
+                                                        <b>Email: </b><p>{{$user->email}}</p>
+                                                        <b>Role: </b>
+                                                        @foreach($user->roles as $roles)
+                                                           {{$roles->type}}
+                                                           <br>
+                                                        @endforeach
                                                     </div>
                                                 </div>
 

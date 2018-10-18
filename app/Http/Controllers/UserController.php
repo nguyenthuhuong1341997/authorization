@@ -21,18 +21,9 @@ class UserController extends Controller
 	}
     public function index()
     {
-        $users= User::withTrashed()->restore();
-        $users = DB::table('users')
-                ->select('users.*')
-                ->where('users.id','!=',Auth::id())
-                ->whereNull('deleted_at')
-                ->get();
-        // dd($users);
-        // $users = User::find(Auth::id())->roles()->get();
-        // $users = User::all();
-
-        // $users->load('roles');
-        // dd($users[0]);
+        $users = User::find(Auth::id());
+        $users = User::all()
+                ->where('id','!=',Auth::id());
         return view('index',compact('users'));
     }
 
@@ -60,14 +51,26 @@ class UserController extends Controller
     public function edit($id)
     {
         $user= User::find($id);
-        $roles = Role::all();
-        return view('users.edit',compact('user','roles'));
+        $role = $user->roles()->get();
+        $roles= Role::all();
+        // dd($role[0]->type);
+        $array = array();
+        foreach ($role as $ro) {
+            array_push($array, $ro->type);
+        }
+        
+        return view('users.edit',compact('user','roles','array'));
     }
-    public function update(UserRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $data= $request->all();
-        $user= User::find($id);
-        $user->update($data);
+        // dd($data);
+        foreach ($data['role'] as $role) {
+            $user = User::find($data['id']);
+            $user->roles()->attach($role);
+        }
+        // $user= User::find($id);
+        // $user->update($data);
         return redirect('users')->with('flag','Cập nhật Thành Công !');
     }
     public function destroy($id)
