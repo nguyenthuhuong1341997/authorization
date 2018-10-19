@@ -11,13 +11,45 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('role_permissions')->truncate();
-		$faker = Faker\Factory::create();
-		for ($i = 1; $i < 12; $i++) {
-		   DB::table('role_permissions')->insert([ //,
-		   'role_id' => $faker->numberBetween($min = 1, $max = 5),
-		   'permission_id' => $faker->numberBetween($min = 1, $max = 4),
-		   ]);
-		}
+        \DB::table('role_permissions')->insert([
+           'role_id'  => 1,
+           'permission_id' =>  1
+       ]);
+         \DB::table('role_permissions')->insert([
+           'role_id'  => 1,
+           'permission_id' =>  2
+       ]);
+          \DB::table('role_permissions')->insert([
+           'role_id'  => 1,
+           'permission_id' =>  3
+       ]);
+           \DB::table('role_permissions')->insert([
+           'role_id'  => 1,
+           'permission_id' =>  4
+       ]);
+            \DB::table('role_permissions')->insert([
+           'role_id'  => 2,
+           'permission_id' =>  1
+       ]);
+             \DB::table('role_permissions')->insert([
+           'role_id'  => 2,
+           'permission_id' =>  2
+       ]);
+              \DB::table('role_permissions')->insert([
+           'role_id'  => 2,
+           'permission_id' =>  3
+       ]);
+               \DB::table('role_permissions')->insert([
+           'role_id'  => 3,
+           'permission_id' =>  1
+       ]);
+                 \DB::table('role_permissions')->insert([
+           'role_id'  => 3,
+           'permission_id' =>  2
+       ]);
+  \DB::table('role_permissions')->insert([
+           'role_id'  => 4,
+           'permission_id' =>  1
+       ]);
     }
 }

@@ -1,35 +1,32 @@
-@extends('layouts.app')
+@extends('layouts.master')
 
-@section('content')
-     <div class="container">
-        <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header"></h1>
-            @if(session()->has('flag'))
-                <div class="alert alert-info">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    {{session()->get('flag')}}
-                </div>
-            @endif
-            <div class="row">
-                <div class="col-md-6">
-                @can('create',Auth::user())
-                
-                <a href="{{asset('')}}users/create">
-                        <button class="btn btn-primary" id='buttonadd' ><i class=" fa fa-plus"></i>Thêm mới</button>
-                    </a>
-                @endcan
-                </div>
+@section('content')       
+    <div class="col-lg-12" style="padding-top: 20px;">
+        
+        @if(session()->has('flag'))
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{session()->get('flag')}}
             </div>
-
+        @endif
+        <div class="row">
+            <div class="col-md-6">
+            @can('create',Auth::user())
+            
+            <a href="{{asset('')}}users/create">
+                    <button class="btn btn-primary" id='buttonadd' ><i class=" fa fa-plus"></i>Add user</button>
+                </a>
+            @endcan
+            </div>
         </div>
-    </div>
+
+    </div>    
 
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    
+                    DataTable
                 </div>
 
                 <div class="panel-body">
@@ -60,7 +57,7 @@
                                         </a>
                                         @endcan
                                         @can('delete', Auth::user())
-                                            <button user_id="{{$user->id}}"  class="btn btn-danger delete_user"><i class="fas fa-trash-alt"></i></button>                                        
+                                            <button user_id="{{$user->id}}"  class="btn btn-danger delete_user"><i class="fa fa-trash"></i></button>                                        
                                         @endcan
                                     </td>
                                 </tr>
@@ -73,10 +70,10 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-md-4">
-                                                        <img src="http://www.gravatar.com/avatar/28fd20ccec6865e2d5f0e1f4446eb7bf?s=100">
+                                                    <div class="col-md-6">
+                                                        <img src="https://zent.edu.vn/img/default-avatar_men.png">
                                                     </div>
-                                                    <div class="col-md-8">
+                                                    <div class="col-md-6">
                                                         <b>Name: </b><p>{{$user->name}}</p>
                                                         <b>Email: </b><p>{{$user->email}}</p>
                                                         <b>Role: </b>
@@ -104,7 +101,7 @@
 
         </div>
     </div>
-</div>
+
 
 @endsection
   

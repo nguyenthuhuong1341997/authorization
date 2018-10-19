@@ -17,11 +17,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/users','UserController@index');
-// Route::group(['middleware' => 'role:admin'], function() {
-//    Route::get('/admin', function() {
-//       return 'Welcome Admin';
-//    });
-// });
+
 Route::get('users/create','UserController@create')->middleware('can:create,App\Models\User');
 Route::get('/users/edit/{id}','UserController@edit')->name('users.edit')->middleware('can:edit,App\Models\User');
 
@@ -29,3 +25,7 @@ Route::post('/users/store','UserController@store')->name('users.store');
 Route::put('/users/update/{id}','UserController@update')->name('users.update');
 // Route::delete('/users/delete/{id}','UserController@destroy')->name('users.destroy');
 Route::get('/users/delete/{id}','UserController@destroy')->name('users.destroy')->middleware('can:delete,App\Models\User');
+Route::get('/users/profile','UserController@profile')->name('user.profile');
+Route::get('/users/password','UserController@password')->name('user.password');
+Route::put('/users/profile/edit/{id}','UserController@updateInfor')->name('user.editinfor');
+Route::post('/users/profile/editpassword/{id}','UserController@updatePassword')->name('user.editpassword');

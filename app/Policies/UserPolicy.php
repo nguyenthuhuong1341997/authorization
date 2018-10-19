@@ -41,4 +41,5 @@ class UserPolicy
         $permission= Permission::where('permission','deleteUser')->first();
         return $user->hasRole($permission->roles);
     }
+
 }

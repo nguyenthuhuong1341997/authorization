@@ -65,8 +65,11 @@ class UserController extends Controller
     {
         $data= $request->all();
         // dd($data);
+        $user = User::find($data['id']);
+        $user->roles()->detach();
         foreach ($data['role'] as $role) {
             $user = User::find($data['id']);
+            // $user->roles()->detach();
             $user->roles()->attach($role);
         }
         // $user= User::find($id);
@@ -79,5 +82,36 @@ class UserController extends Controller
         $user->delete();
         return response()->json(['success']);
         
+    }
+    public function profile(){
+       $user= User::find(Auth::id());
+       return view('users.profile',compact('user'));
+    }
+    public function password(){
+       $user= User::find(Auth::id());
+       return view('users.password',compact('user'));
+    }
+
+    public function updateInfor(Request $req, $id)
+    {
+       $data = $req->all();
+       $user = User::find($id);
+       $user->update($data);
+       return redirect()->back()->with('flag_edit','Thanh cong');
+    }
+    public function updatePassword(Request $request,$id){
+       $user = User::find($id);
+       $data = $request->validate([
+           'current_password'=>'required',
+           'password'=>'required|min:6',
+           'password_confirmation'=>'required|same:password',
+       ]);
+       if (Hash::check($data['current_password'], $user->password)) {
+           $user->password = Hash::make($data['password']);
+           $user->save();
+           return redirect()->back()->with('flag', 'successfully');
+       } else {
+           return redirect()->back()->with('flag', 'Not successfully');
+       }
     }
 }

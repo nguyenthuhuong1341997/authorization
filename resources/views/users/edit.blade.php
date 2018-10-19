@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.master')
 @section('content')
-<div class="container">
+<div class="col-lg-12" style="padding-top: 20px;">
 	<form action="{{route('users.update',$user->id)}}" method="POST" role="form">
 		{{csrf_field()}}
 		{{ method_field('PUT') }}
@@ -8,7 +8,7 @@
 		<div class="form-group">
 			<input type="hidden" name="id" value="{{$user->id}}">
 			<label for="">Name</label>
-			<input type="text" class="form-control" id="" name="name" autocomplete="off" placeholder="Nhap Name" value="{{$user->name}}">
+			<input type="text" class="form-control" name="name" autocomplete="off" placeholder="Nhap Name" value="{{$user->name}}">
 			@if ($errors->has('name'))
 				<p style="color: red;">{{$errors->first('name')}}</p>
 			@endif
@@ -24,7 +24,7 @@
 		@endforeach
 		<div class="form-group">
 			<label for="">Email</label>
-			<input type="text" class="form-control" id="" name="email" autocomplete="off" placeholder="Nhap Email" value="{{$user->email}}">
+			<input type="text" class="form-control" name="email" autocomplete="off" placeholder="Nhap Email" value="{{$user->email}}">
 			@if ($errors->has('email'))
 				<p style="color: red;">{{$errors->first('email')}}</p>
 			@endif

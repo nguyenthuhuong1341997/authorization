@@ -56,15 +56,15 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a href="{{route('user.profile')}}" class="dropdown-item"><i class="fa fa-user fa-fw"></i>Profile</a>
+
+                                    <a href="{{route('user.password')}}" class="dropdown-item" ><i class="fa fa-user fa-fw"></i>Thay doi mat khau</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-                                    <a class="dropdown-item" href="{{ route('logout') }}">
-                                       Edit profile
-                                    </a>
-                                    <a class="dropdown-item" href="">Change password</a>
+                                    
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
